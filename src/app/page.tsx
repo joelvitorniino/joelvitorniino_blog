@@ -1,12 +1,6 @@
-async function getData() {
-  const res = await fetch('http://localhost:3000/api/posts?id=test', { cache: 'force-cache' });
+"use client";
 
-  if(!res.ok) {
-    throw new Error('Failed to fetch data');
-  };
-
-  return res.json();
-}
+import useSWR from "swr";
 
 interface DataType {
   data: {
@@ -20,13 +14,18 @@ interface DataType {
   content: string;
 };
 
-export default async function Home() {
-  const data: DataType[] = await getData();
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+export default function Home() {
+  const { data, error, isLoading } = useSWR<DataType[]>('http://localhost:3000/api/posts?id=test', fetcher);   
+
+  if (error) return "An error has occurred.";
+  if (isLoading) return "Loading...";
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg-grid-cols-4 md:p-0 mt-8">
-      <h1>{ data.map(post => post.data.title) }</h1>
-      <h2>{ data.map(post => post.content) } </h2>
+      <h1>{ data?.map(post => post.data.title) }</h1>
+      <h2>{ data?.map(post => post.content) } </h2>
     </div>
   )
 }
