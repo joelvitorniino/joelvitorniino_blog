@@ -1,6 +1,7 @@
 "use client";
 
 import useSWR from "swr";
+import PostsComponent from "./components/PostsComponent";
 
 interface DataType {
   data: {
@@ -17,15 +18,23 @@ interface DataType {
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Home() {
-  const { data, error, isLoading } = useSWR<DataType[]>('http://localhost:3000/api/posts?id=test', fetcher);   
+  const { data, error, isLoading } = useSWR<DataType[]>('http://localhost:3000/api/posts/all', fetcher);   
 
   if (error) return "An error has occurred.";
   if (isLoading) return "Loading...";
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg-grid-cols-4 md:p-0 mt-8">
-      <h1>{ data?.map(post => post.data.title) }</h1>
-      <h2>{ data?.map(post => post.content) } </h2>
+    <div className="flex justify-center items-center h-screen">
+      {
+        data?.map((post) => (
+            <PostsComponent
+            title={post.data.title}
+            date={post.data.date}
+            description={post.data.metaDesc}
+            content={post.content}
+          />
+        ))
+      }
     </div>
-  )
-}
+  );
+};
