@@ -3,6 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import matter from "gray-matter";
 
+type Post = {
+  data: { [key: string]: any };
+  content: string;
+};
+
 export async function GET(request: NextRequest) {
   // return NextResponse.json({ text: "Hello, World!" })
   const files = fs.readdirSync(
@@ -24,5 +29,10 @@ export async function GET(request: NextRequest) {
     };
   });
 
-  return NextResponse.json(posts);
+  const uniquePostsSet = new Set(posts.map((post) => post.data.date));
+  const uniquePosts = Array.from(uniquePostsSet).map((date) =>
+    posts.find((post) => post.data.date === date)
+  );
+
+  return NextResponse.json(uniquePosts);
 }
