@@ -3,11 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import matter from "gray-matter";
 
-type Post = {
-  data: { [key: string]: any };
-  content: string;
-};
-
 export async function GET(request: NextRequest) {
   // return NextResponse.json({ text: "Hello, World!" })
   const files = fs.readdirSync(
