@@ -28,14 +28,26 @@ export default function Home() {
   if (isLoading) return "Loading...";
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen">
+    <header className="text-center mb-8">
+      <h1 className="text-4xl font-bold">Joel Vitor</h1>
+      <p className="text-gray-500">
+        Olá! Me chamo Joel Vitor, tenho 17 anos. 
+        <br />
+        Este blog foi criado com o propósito de partilhar meus pensamentos, experiências com idiomas e a programação.
+      </p>
+    </header>
+
+    <div className="flex justify-center items-center">
       {data?.map((post) => (
         <PostsComponent
+          key={post.identifier}
           title={post.data.title}
           date={post.data.date}
           url={post.identifier}
         />
       ))}
     </div>
+  </div>
   );
 }
