@@ -8,7 +8,7 @@ interface PostProps {
 
 export default function PostComponent({ title, date, url }: PostProps) {
   return (
-    <article className="bg-black text-white p-6 mb-6 rounded-md shadow-md">
+    <article className="bg-black text-white p-6 mb-6 rounded-md shadow-md relative">
       <h2 className="text-3xl font-bold mb-3">{title}</h2>
       <p className="text-sm text-gray-500 mb-3">{date}</p>
       <Link
