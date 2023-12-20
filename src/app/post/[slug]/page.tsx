@@ -53,7 +53,6 @@ export default function Post() {
           <PostComponent
             title={post.data.title}
             date={post.data.date}
-            description={post.data.metaDesc}
             content={post.content}
           />
         );
