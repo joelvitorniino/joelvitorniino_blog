@@ -30,15 +30,14 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
     <header className="text-center mb-8">
-      <h1 className="text-4xl font-bold">Joel Vitor</h1>
-      <p className="text-gray-500">
+      <p className="text-gray-500 text-xl">
         Olá! Me chamo Joel Vitor, tenho 17 anos. 
         <br />
         Este blog foi criado com o propósito de partilhar meus pensamentos, experiências com idiomas e a programação.
       </p>
     </header>
 
-    <div className="flex justify-center items-center">
+    <div className="flex-col space-y-6">
       {data?.map((post) => (
         <PostsComponent
           key={post.identifier}
