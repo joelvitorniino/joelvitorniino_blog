@@ -13,6 +13,7 @@ interface DataType {
     socialImage: string;
     date: string;
     tags: string[];
+    keywords: string[];
   };
   content: string;
 }
@@ -40,6 +41,14 @@ export default function Post() {
   if (error) return "An error has occurred.";
   if (isLoading) return "Loading...";
 
+  const highlightKeywords = (keywords: string[], text: string,): string => {
+    keywords?.forEach((keyword) => { 
+      text = text.replace(`**${keyword}**`, `<span class="bg-yellow-200 text-black font-bold p-1 rounded">${keyword}</span>`);
+    });
+
+    return text;
+  };
+
   return (
     <div className="max-w-2xl mx-auto bg-black text-white p-8 mb-8 rounded-md shadow-md">
       <Link
@@ -48,12 +57,14 @@ export default function Post() {
       >
         Home
       </Link>
-      {data?.map((post) => {
+      {data?.map((post) => {    
+        const content = highlightKeywords(post.data.keywords, post.content);   
+        console.log(content) 
         return (
           <PostComponent
             title={post.data.title}
             date={post.data.date}
-            content={post.content}
+            content={content}
           />
         );
       })}

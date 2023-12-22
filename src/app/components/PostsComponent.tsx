@@ -4,9 +4,10 @@ interface PostProps {
   title: string;
   date: string;
   url: string;
-}
+};
 
 export default function PostComponent({ title, date, url }: PostProps) {
+
   return (
     <article className="bg-black text-white p-6 mb-6 rounded-md shadow-md">
       <h2 className="text-3xl font-bold mb-3">{title}</h2>
