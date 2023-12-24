@@ -1,5 +1,3 @@
-// Importações...
-
 interface PostProps {
   title: string;
   date: string;

@@ -2,6 +2,7 @@
 
 import useSWR from "swr";
 import PostsComponent from "./components/PostsComponent";
+import FooterComponent from "./components/FooterComponent";
 
 interface DataType {
   data: {
@@ -46,6 +47,7 @@ export default function Home() {
           url={post.identifier}
         />
       ))}
+      <FooterComponent />
     </div>
   </div>
   );
