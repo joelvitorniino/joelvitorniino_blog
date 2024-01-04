@@ -38,7 +38,7 @@ export default function Home() {
       </p>
     </header>
 
-    <div className="flex-col space-y-6">
+    <div className="flex-col lg:flex lg:flex-row lg:flex-wrap lg:justify-center space-y-6 lg:space-x-6 lg:items-stretch">
       {data?.map((post) => (
         <PostsComponent
           key={post.identifier}
