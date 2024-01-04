@@ -41,7 +41,7 @@ export default function Post() {
   if (error) return "An error has occurred.";
   if (isLoading) return "Loading...";
 
-  const highlightKeywords = (keywords: string[], text: string,): string => {
+  const highlightKeywords = (keywords: string[], text: string): string => {
     keywords?.forEach((keyword) => { 
       text = text.replace(`**${keyword}**`, `<span class="bg-yellow-200 text-black font-bold p-1 rounded">${keyword}</span>`);
     });
@@ -59,7 +59,6 @@ export default function Post() {
       </Link>
       {data?.map((post) => {    
         const content = highlightKeywords(post.data.keywords, post.content);   
-        console.log(content) 
         return (
           <PostComponent
             title={post.data.title}
