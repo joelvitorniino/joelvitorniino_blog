@@ -4,7 +4,6 @@ import fs from "fs";
 import matter from "gray-matter";
 
 export async function GET(request: NextRequest) {
-  // return NextResponse.json({ text: "Hello, World!" })
   const files = fs.readdirSync(
     `/home/vitorniino/Documents/joelvitorniino_blog/public/posts`
   );
