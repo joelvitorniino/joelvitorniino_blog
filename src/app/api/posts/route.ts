@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   const files = fs.readdirSync(
     `/home/vitorniino/Documents/joelvitorniino_blog/public/posts`
   );
-  const posts = files.map((file) => {
+  const posts = files.map(() => {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
 
@@ -29,4 +29,4 @@ export async function GET(request: NextRequest) {
   );
 
   return NextResponse.json(uniquePosts);
-}
+};
