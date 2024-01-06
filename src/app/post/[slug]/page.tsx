@@ -59,6 +59,18 @@ export default function Post() {
       </Link>
       {data?.map((post) => {    
         const content = highlightKeywords(post.data.keywords, post.content);   
+
+        if(post.data.socialImage.length > 0) {
+          return (
+            <PostComponent
+              title={post.data.title}
+              date={post.data.date}
+              imgUrl={post.data.socialImage}
+              content={content}
+            />
+          );
+        };
+
         return (
           <PostComponent
             title={post.data.title}
