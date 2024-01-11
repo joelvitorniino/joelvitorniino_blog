@@ -14,11 +14,11 @@ export async function GET(request: NextRequest) {
   };
 
   const files = fs.readdirSync(
-    `../posts/`
+    `${__dirname}/../posts/`
   );
   const posts = files.map((file) => {
     const source = fs.readFileSync(
-      `../posts/${file}`,
+      `${__dirname}/../posts/${file}`,
       "utf-8"
     );
     const { data, content } = matter(source);
