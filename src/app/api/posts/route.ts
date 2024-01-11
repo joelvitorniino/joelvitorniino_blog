@@ -5,14 +5,14 @@ import matter from "gray-matter";
 
 export async function GET(request: NextRequest) {
   const files = fs.readdirSync(
-    `/public/posts/`
+    `./public/posts/`
   );
   const posts = files.map(() => {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
 
     const source = fs.readFileSync(
-      `/public/posts/${id}.md`,
+      `./public/posts/${id}.md`,
       "utf-8"
     );
     const { data, content } = matter(source);
