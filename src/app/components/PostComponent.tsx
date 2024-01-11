@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface PostProps {
   title: string;
   date: string;
@@ -12,7 +14,7 @@ export default function Post({ title, date, imgUrl, content }: PostProps) {
     <div className="max-w-2xl mx-auto bg-black text-white p-8 mb-8 rounded-md shadow-md">
       <h1 className="text-4xl font-bold mb-5">{title}</h1>
       {imgUrl && (
-        <img
+        <Image
           src={imgUrl}
           alt={title}
           className="w-auto h-auto mb-4 rounded-md shadow-md"
