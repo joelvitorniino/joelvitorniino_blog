@@ -57,13 +57,12 @@ export default function Post() {
       >
         Home
       </Link>
-      {data?.map((post, key) => {    
+      {data?.map((post) => {    
         const content = highlightKeywords(post.data.keywords, post.content);   
 
         if(post.data.socialImage.length > 0) {
           return (
             <PostComponent
-              key={key}
               title={post.data.title}
               date={post.data.date}
               imgUrl={post.data.socialImage}
@@ -74,7 +73,6 @@ export default function Post() {
 
         return (
           <PostComponent
-            key={key}
             title={post.data.title}
             date={post.data.date}
             content={content}
