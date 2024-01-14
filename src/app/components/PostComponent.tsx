@@ -1,13 +1,12 @@
-import Image from "next/image";
-
 interface PostProps {
   title: string;
   date: string;
   imgUrl?: string;
   content: string;
+  tags?: string[]; // Adicionando a propriedade de tags
 }
 
-export default function Post({ title, date, imgUrl, content }: PostProps) {
+export default function Post({ title, date, imgUrl, content, tags }: PostProps) {
   const sanitizedContent = { __html: content };
 
   return (
@@ -25,7 +24,18 @@ export default function Post({ title, date, imgUrl, content }: PostProps) {
         className="text-lg leading-relaxed"
         dangerouslySetInnerHTML={sanitizedContent}
       />
+      {tags && (
+        <div className="flex flex-wrap gap-2 mt-4">
+          {tags.map((tag) => (
+            <span
+              key={tag}
+              className="bg-blue-500 text-white px-2 py-1 rounded-full text-sm"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
-  
