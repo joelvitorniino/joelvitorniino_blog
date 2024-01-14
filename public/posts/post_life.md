@@ -5,7 +5,8 @@ metaDesc: "Meu conceito sobre a vida."
 socialImage: "https://kunaldesai.blog/wp-content/uploads/2017/12/what-is-life.png"
 date: "13-01-2024"
 tags:
-    - webrtc
+    - life
+    - god
 keywords: ["nada"]
 ---
 
