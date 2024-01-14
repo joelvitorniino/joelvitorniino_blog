@@ -63,11 +63,13 @@ export default function Post() {
         if(post.data.socialImage.length > 0) {
           return (
             <PostComponent
-              title={post.data.title}
-              date={post.data.date}
-              imgUrl={post.data.socialImage}
-              content={content}
-            />
+          key={post.data.title}
+          title={post.data.title}
+          date={post.data.date}
+          imgUrl={post.data.socialImage}
+          content={content}
+          tags={post.data.tags} // Passando as tags
+        />
           );
         };
 
