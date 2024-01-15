@@ -14,6 +14,7 @@ interface DataType {
     date: string;
     tags: string[];
     keywords: string[];
+    italicWords: string[];
   };
   content: string;
 }
@@ -41,9 +42,23 @@ export default function Post() {
   if (error) return "An error has occurred.";
   if (isLoading) return "Loading...";
 
-  const highlightKeywords = (keywords: string[], text: string): string => {
-    keywords?.forEach((keyword) => { 
-      text = text.replace(`**${keyword}**`, `<span class="bg-yellow-200 text-black font-bold p-1 rounded">${keyword}</span>`);
+  const highlightWords = (
+    keywords: string[],
+    italicWords: string[],
+    text: string
+  ): string => {
+    keywords?.forEach((keyword) => {
+      text = text.replace(
+        `**${keyword}**`,
+        `<span class="bg-yellow-200 text-black font-bold p-1 rounded">${keyword}</span>`
+      );
+    });
+
+    italicWords?.forEach((word) => {
+      text = text.replace(
+        `*${word}*`,
+        `<span class="italic text-gray-400">${word}</span>`
+      );
     });
 
     return text;
@@ -57,21 +72,25 @@ export default function Post() {
       >
         Home
       </Link>
-      {data?.map((post) => {    
-        const content = highlightKeywords(post.data.keywords, post.content);   
+      {data?.map((post) => {
+        const content = highlightWords(
+          post.data.keywords,
+          post.data.italicWords,
+          post.content
+        );
 
-        if(post.data.socialImage.length > 0) {
+        if (post.data.socialImage.length > 0) {
           return (
             <PostComponent
-          key={post.data.title}
-          title={post.data.title}
-          date={post.data.date}
-          imgUrl={post.data.socialImage}
-          content={content}
-          tags={post.data.tags} // Passando as tags
-        />
+              key={post.data.title}
+              title={post.data.title}
+              date={post.data.date}
+              imgUrl={post.data.socialImage}
+              content={content}
+              tags={post.data.tags}
+            />
           );
-        };
+        }
 
         return (
           <PostComponent
