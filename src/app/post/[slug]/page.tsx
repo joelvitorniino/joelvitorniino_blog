@@ -16,6 +16,7 @@ interface DataType {
     keywords: string[];
     italicWords: string[];
     linkPosts: string[];
+    code: string[];
   };
   content: string;
 }
@@ -47,6 +48,7 @@ export default function Post() {
     keywords: string[],
     italicWords: string[],
     linkPosts: string[],
+    code: string[],
     text: string
   ): string => {
     keywords?.forEach((keyword) => {
@@ -66,9 +68,16 @@ export default function Post() {
     linkPosts?.forEach((url, index) => {
       text = text.replace(
         `{${url}}`,
-        `<a href="${url}" class="text-blue-500 hover:underline focus:outline-none focus:ring focus:border-blue-300">Matéria ${index + 1}</a>`
+        `<a href="${url}" class="text-blue-500 hover:underline   focus:outline-none focus:ring focus:border-blue-300">Matéria ${index + 1}</a>`
+      );
+    });
+
+    code?.forEach((codeFormatted) => {
+      text = text.replace(
+        `--${codeFormatted}--`,
+        `<code class="bg-gray-800 text-white p-1 rounded">${codeFormatted}</code>`
       )
-    })
+    });
 
     return text;
   };
@@ -86,6 +95,7 @@ export default function Post() {
           post.data.keywords,
           post.data.italicWords,
           post.data.linkPosts,
+          post.data.code,
           post.content
         );
 
