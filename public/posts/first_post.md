@@ -8,6 +8,7 @@ tags:
     - webrtc
 keywords: ["reflexões", "relatos pessoais"]
 linkPosts: ["https://google.com", "https://github.com"]
+code: ['console.log("Hello, World!")']
 ---
 
 Seja bem vindo ao meu primeiro post!
@@ -22,3 +23,8 @@ Links das fontes:
 {https://google.com}
 <br>
 {https://github.com}
+
+<br>
+Código:
+<br>
+--console.log("Hello, World!")--
