@@ -15,6 +15,7 @@ interface DataType {
     tags: string[];
     keywords: string[];
     italicWords: string[];
+    linkPosts: string[];
   };
   content: string;
 }
@@ -45,6 +46,7 @@ export default function Post() {
   const highlightWords = (
     keywords: string[],
     italicWords: string[],
+    linkPosts: string[],
     text: string
   ): string => {
     keywords?.forEach((keyword) => {
@@ -61,6 +63,13 @@ export default function Post() {
       );
     });
 
+    linkPosts?.forEach((url, index) => {
+      text = text.replace(
+        `{${url}}`,
+        `<a href="${url}" class="text-blue-500 hover:underline focus:outline-none focus:ring focus:border-blue-300">Matéria ${index + 1}</a>`
+      )
+    })
+
     return text;
   };
 
@@ -76,6 +85,7 @@ export default function Post() {
         const content = highlightWords(
           post.data.keywords,
           post.data.italicWords,
+          post.data.linkPosts,
           post.content
         );
 
