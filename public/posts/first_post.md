@@ -7,9 +7,18 @@ date: "06-01-2024"
 tags:
     - webrtc
 keywords: ["reflexões", "relatos pessoais"]
+linkPosts: ["https://google.com", "https://github.com"]
 ---
 
 Seja bem vindo ao meu primeiro post!
 <br>
 <br>
 Neste blog teremos: **reflexões**, **relatos pessoais** e muito mais!
+
+<br><br>
+
+Links das fontes: 
+<br>
+{https://google.com}
+<br>
+{https://github.com}
