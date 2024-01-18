@@ -45,38 +45,12 @@ export default function Post() {
   if (isLoading) return "Loading...";
 
   const highlightWords = (
-    keywords: string[],
-    italicWords: string[],
-    linkPosts: string[],
-    code: string[],
+    replacements: Record<string, string>,
     text: string
   ): string => {
-    keywords?.forEach((keyword) => {
-      text = text.replace(
-        `**${keyword}**`,
-        `<span class="bg-yellow-200 text-black font-bold p-1 rounded">${keyword}</span>`
-      );
-    });
-
-    italicWords?.forEach((word) => {
-      text = text.replace(
-        `*${word}*`,
-        `<span class="italic text-gray-400">${word}</span>`
-      );
-    });
-
-    linkPosts?.forEach((url, index) => {
-      text = text.replace(
-        `{${url}}`,
-        `<a href="${url}" class="text-blue-500 hover:underline   focus:outline-none focus:ring focus:border-blue-300">Matéria ${index + 1}</a>`
-      );
-    });
-
-    code?.forEach((codeFormatted) => {
-      text = text.replace(
-        `--${codeFormatted}--`,
-        `<code class="bg-gray-800 text-white p-1 rounded">${codeFormatted}</code>`
-      )
+    Object.entries(replacements).forEach(([pattern, replacement]) => {
+      const regexPattern = new RegExp(pattern, "g");
+      text = text.replace(regexPattern, replacement);
     });
 
     return text;
@@ -92,10 +66,15 @@ export default function Post() {
       </Link>
       {data?.map((post) => {
         const content = highlightWords(
-          post.data.keywords,
-          post.data.italicWords,
-          post.data.linkPosts,
-          post.data.code,
+          {
+            "\\*\\*(.*?)\\*\\*":
+              '<span class="bg-yellow-200 text-black font-bold p-1 rounded">$1</span>',
+            "\\*(.*?)\\*": '<span class="italic text-gray-400">$1</span>',
+            "{(.*?)}":
+              '<a href="$1" class="text-blue-500 hover:underline focus:outline-none focus:ring focus:border-blue-300">Matéria $1</a>',
+            "--(.*?)--":
+              '<code class="bg-gray-800 text-white p-1 rounded">$1</code>',
+          },
           post.content
         );
 
