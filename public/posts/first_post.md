@@ -28,4 +28,10 @@ Links das fontes:
 <br>
 Código:
 <br>
---console.log("Hello, World!")--
+--
+helloWorld("Hello, World!");
+
+function hello() {
+
+}
+--
