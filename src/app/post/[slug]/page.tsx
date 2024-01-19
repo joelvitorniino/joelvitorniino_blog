@@ -73,8 +73,8 @@ export default function Post() {
             "\\*(.*?)\\*": '<span class="italic text-gray-400">$1</span>',
             "{(.*?)}":
               '<a href="$1" class="text-blue-500 hover:underline focus:outline-none focus:ring focus:border-blue-300">Matéria $1</a>',
-            "--(.*?)--":
-              '<code class="bg-gray-800 text-white p-1 rounded">$1</code>',
+              "--((.|\\s|\n)*?)--":
+      '<pre class="bg-gray-800 text-white p-4 rounded font-mono whitespace-pre-wrap">$1</pre>',
           },
           post.content
         );
