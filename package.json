@@ -10,6 +10,7 @@
     "md": "contentlayer build"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.1",
     "gray-matter": "^4.0.3",
     "markdown-it": "^14.0.0",
     "next": "14.0.4",
