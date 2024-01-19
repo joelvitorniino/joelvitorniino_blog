@@ -12,6 +12,7 @@ interface DataType {
     metaDesc: string;
     socialImage: string;
     date: string;
+    hour: string;
     tags: string[];
     keywords: string[];
     italicWords: string[];
@@ -84,6 +85,7 @@ export default function Post() {
               key={post.data.title}
               title={post.data.title}
               date={post.data.date}
+              hour={post.data.hour}
               imgUrl={post.data.socialImage}
               content={content}
               tags={post.data.tags}
@@ -95,6 +97,7 @@ export default function Post() {
           <PostComponent
             title={post.data.title}
             date={post.data.date}
+            hour={post.data.hour}
             content={content}
           />
         );
