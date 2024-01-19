@@ -1,12 +1,15 @@
+import { ClockIcon } from "@heroicons/react/24/outline";
+
 interface PostProps {
   title: string;
   date: string;
+  hour: string;
   imgUrl?: string;
   content: string;
-  tags?: string[]; // Adicionando a propriedade de tags
+  tags?: string[];
 }
 
-export default function Post({ title, date, imgUrl, content, tags }: PostProps) {
+export default function Post({ title, date, hour, imgUrl, content, tags }: PostProps) {
   const sanitizedContent = { __html: content };
 
   return (
@@ -19,7 +22,9 @@ export default function Post({ title, date, imgUrl, content, tags }: PostProps) 
           className="w-auto h-auto mb-4 rounded-md shadow-md"
         />
       )}
-      <p className="text-sm text-gray-500 mb-4">{date}</p>
+     <p className="text-sm text-gray-500 mb-4 flex items-center">
+        {date} at (<ClockIcon className="h-4 w-4 mr-1" /> {hour})
+      </p>
       <div
         className="text-lg leading-relaxed"
         dangerouslySetInnerHTML={sanitizedContent}
