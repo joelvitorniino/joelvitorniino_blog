@@ -7,9 +7,10 @@ interface PostProps {
   imgUrl?: string;
   content: string;
   tags?: string[];
+  approximatedTime: string;
 }
 
-export default function Post({ title, date, hour, imgUrl, content, tags }: PostProps) {
+export default function Post({ title, date, hour, imgUrl, content, tags, approximatedTime }: PostProps) {
   const sanitizedContent = { __html: content };
 
   return (
@@ -24,6 +25,9 @@ export default function Post({ title, date, hour, imgUrl, content, tags }: PostP
       )}
      <p className="text-sm text-gray-500 mb-4 flex items-center">
         {date} at (<ClockIcon className="h-4 w-4 mr-1" /> {hour})
+      </p>
+      <p className="text-sm text-gray-500 mb-3 font-bold">
+        { approximatedTime }
       </p>
       <div
         className="text-lg leading-relaxed"
