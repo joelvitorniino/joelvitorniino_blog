@@ -17,6 +17,7 @@
     "node-cache": "^5.1.2",
     "react": "^18",
     "react-dom": "^18",
+    "reading-time": "^1.5.0",
     "swr": "^2.2.4"
   },
   "devDependencies": {
