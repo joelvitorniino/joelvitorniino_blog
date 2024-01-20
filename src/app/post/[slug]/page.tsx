@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useSWR from "swr";
 
+const readingTime = require('reading-time');
+
 interface DataType {
   data: {
     title: string;
@@ -73,11 +75,13 @@ export default function Post() {
             "\\*(.*?)\\*": '<span class="italic text-gray-400">$1</span>',
             "{(.*?)}":
               '<a href="$1" class="text-blue-500 hover:underline focus:outline-none focus:ring focus:border-blue-300">Matéria $1</a>',
-              "--((.|\\s|\n)*?)--":
-      '<pre class="bg-gray-800 text-white p-4 rounded font-mono whitespace-pre-wrap">$1</pre>',
+            "--((.|\\s|\n)*?)--":
+              '<pre class="bg-gray-800 text-white p-4 rounded font-mono whitespace-pre-wrap">$1</pre>',
           },
           post.content
         );
+
+        const approximatedTime = readingTime(content).text.replace("read", "aproximadamente de leitura");
 
         if (post.data.socialImage.length > 0) {
           return (
@@ -89,6 +93,7 @@ export default function Post() {
               imgUrl={post.data.socialImage}
               content={content}
               tags={post.data.tags}
+              approximatedTime={approximatedTime}
             />
           );
         }
@@ -99,6 +104,7 @@ export default function Post() {
             date={post.data.date}
             hour={post.data.hour}
             content={content}
+            approximatedTime={approximatedTime}
           />
         );
       })}
