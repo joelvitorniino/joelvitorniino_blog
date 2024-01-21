@@ -3,6 +3,7 @@
 import PostComponent from "@/app/components/PostComponent";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect, useRef } from "react";
 import useSWR from "swr";
 
 const readingTime = require('reading-time');
@@ -27,38 +28,86 @@ interface DataType {
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Post() {
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const startTimer = () => {
+      timerRef.current = setInterval(() => {
+        setElapsedTime((prevElapsedTime) => prevElapsedTime + 1);
+      }, 1000);
+    };
+
+    const stopTimer = () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+
+    startTimer();
+
+    const handleBeforeUnload = () => {
+      stopTimer();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        stopTimer();
+      } else {
+        startTimer();
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      stopTimer();
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${minutes > 0 ? `${minutes} minutos ` : ''}${remainingSeconds} segundos`;
+  };
+
+
   const router = usePathname();
   const regex = /\/post\/(\w+)/;
-
+  
   const match = regex.exec(router);
-
+  
   let slug;
-
+  
   if (match && match[1]) {
     const result = match[1];
     slug = result;
   }
-
+  
   const { data, error, isLoading } = useSWR<DataType[]>(
     `http://localhost:3000/api/posts?id=${slug}`,
     fetcher
-  );
-
-  if (error) return "An error has occurred.";
-  if (isLoading) return "Loading...";
-
-  const highlightWords = (
-    replacements: Record<string, string>,
-    text: string
-  ): string => {
-    Object.entries(replacements).forEach(([pattern, replacement]) => {
+    );
+    
+    if (error) return "An error has occurred.";
+    if (isLoading) return "Loading...";
+    
+    const highlightWords = (
+      replacements: Record<string, string>,
+      text: string
+      ): string => {
+        Object.entries(replacements).forEach(([pattern, replacement]) => {
       const regexPattern = new RegExp(pattern, "g");
       text = text.replace(regexPattern, replacement);
     });
 
     return text;
   };
-
+  
   return (
     <div className="max-w-2xl mx-auto bg-black text-white p-8 mb-8 rounded-md shadow-md">
       <Link
@@ -108,6 +157,9 @@ export default function Post() {
           />
         );
       })}
+      <div className="fixed bottom-4 right-4 text-sm text-gray-500">
+      {`Tempo na página: ${formatTime(elapsedTime)}`}
+      </div>
     </div>
   );
 }
