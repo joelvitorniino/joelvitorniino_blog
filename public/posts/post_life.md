@@ -8,8 +8,6 @@ hour: "13:30"
 tags:
     - life
     - god
-keywords: ["além"]
-italicWords: ["supérfluo"]  
 ---
 
 Este é o meu primeiro post em tom sério no meu blog. Espero que gostem!
