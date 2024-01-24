@@ -7,7 +7,6 @@ date: "06-01-2024"
 hour: "23:04"
 tags:
     - webrtc
-keywords: ["reflexões", "relatos pessoais"]
 linkPosts: ["https://google.com", "https://github.com"]
 code: ['console.log("Hello, World!")']
 ---
