@@ -9,8 +9,6 @@ tags:
     - college
     - university
     - school
-keywords: ["faculdade", "famigeradas"]
-italicWords: ["vida amorosa", "profissional", "familiar", "autor"]  
 ---
 
 A expectativa mais alta na vida de um estudante é a ingressão no curso/faculdade dos seus sonhos! A pessoa passa anos e anos, fazendo expectativas sobre sua possível *vida amorosa*, *profissional* e *familiar*.
