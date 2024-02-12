@@ -3,8 +3,10 @@
 import PostComponent from "@/app/components/PostComponent";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from   "react";
+import { Howl, Howler } from 'howler';
 import useSWR from "swr";
+import { useRouter } from "next/router";
 
 const readingTime = require('reading-time');
 
@@ -29,9 +31,16 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Post() {
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const audioRef = useRef<Howl | null>(null);
 
   useEffect(() => {
+    audioRef.current = new Howl({
+      src: `/music/lofi.mp3`,
+      html5: true
+    });
+
     const startTimer = () => {
       timerRef.current = setInterval(() => {
         setElapsedTime((prevElapsedTime) => prevElapsedTime + 1);
@@ -58,12 +67,22 @@ export default function Post() {
       }
     };
 
+    const handleRouteChange = () => {
+      if (audioRef.current && isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+    };
+
     window.addEventListener("beforeunload", handleBeforeUnload);
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       stopTimer();
       window.removeEventListener("beforeunload", handleBeforeUnload);
+      if (audioRef.current && isPlaying) {
+        audioRef.current.stop();
+      }
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
@@ -74,6 +93,7 @@ export default function Post() {
 
     return `${minutes > 0 ? `${minutes} minutos ` : ''}${remainingSeconds} segundos`;
   };
+  
 
 
   const router = usePathname();
@@ -106,6 +126,17 @@ export default function Post() {
     });
 
     return text;
+  };
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
   };
   
   return (
@@ -157,6 +188,18 @@ export default function Post() {
           />
         );
       })}
+
+      {/* Player de música */}
+      <div className="fixed bottom-4 left-4 flex items-center space-x-2">
+        {/* Botão de play/pause */}
+        <button
+          onClick={togglePlay}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none"
+        >
+          {isPlaying ? "Pause" : "Play"}
+        </button>
+        </div>
+
       <div className="fixed bottom-4 right-4 text-sm text-gray-500">
       {`Tempo na página: ${formatTime(elapsedTime)}`}
       </div>
