@@ -1,12 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import PostComponent from "@/app/components/PostComponent";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from   "react";
 import { Howl, Howler } from 'howler';
 import useSWR from "swr";
-import { useRouter } from "next/router";
 
 const readingTime = require('reading-time');
 
@@ -34,12 +34,24 @@ export default function Post() {
   const [isPlaying, setIsPlaying] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<Howl | null>(null);
+  const [savedMinute, setSavedMinute] = useState<number | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     audioRef.current = new Howl({
       src: `/music/lofi.mp3`,
-      html5: true
+      html5: true,
+      onplay: () => {
+        if (savedMinute !== null) {
+          audioRef.current?.seek(savedMinute * 60);
+          setElapsedTime(savedMinute * 60);
+        }
+      },
     });
+
+    if (savedMinute !== null && !isPlaying) {
+      audioRef.current?.seek(savedMinute * 60);
+    }
 
     const startTimer = () => {
       timerRef.current = setInterval(() => {
@@ -57,6 +69,11 @@ export default function Post() {
 
     const handleBeforeUnload = () => {
       stopTimer();
+      if (audioRef.current && isPlaying) {
+        const currentTime = audioRef.current.seek();
+        const currentMinute = Math.floor(currentTime / 60);
+        localStorage.setItem("savedMinute", currentMinute.toString());
+      }
     };
 
     const handleVisibilityChange = () => {
@@ -67,7 +84,7 @@ export default function Post() {
       }
     };
 
-    const handleRouteChange = () => {
+    const handleClickLink = () => {
       if (audioRef.current && isPlaying) {
         audioRef.current.pause();
         setIsPlaying(false);
@@ -76,17 +93,32 @@ export default function Post() {
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("click", handleClickLink);
+
+    // Recuperar o minuto salvo quando a página for montada
+    const savedMinuteString = localStorage.getItem("savedMinute");
+    if (savedMinuteString !== null) {
+      const savedMinuteNumber = parseInt(savedMinuteString, 10);
+      if (!isNaN(savedMinuteNumber)) {
+        setSavedMinute(savedMinuteNumber);
+      }
+    }
 
     return () => {
       stopTimer();
+      handleBeforeUnload();
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      if (audioRef.current && isPlaying) {
-        audioRef.current.stop();
-      }
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.removeEventListener("click", handleClickLink);
+
+      // Limpar estado e parar a música ao desmontar o componente
+      if (audioRef.current) {
+        audioRef.current.stop();
+        setIsPlaying(false);
+      }
     };
   }, []);
-
+  
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -130,11 +162,11 @@ export default function Post() {
 
   const togglePlay = () => {
     if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
+      if (!isPlaying && savedMinute !== null) {
+        audioRef.current.seek(savedMinute * 60);
+        setElapsedTime(savedMinute * 60);
       }
+      isPlaying ? audioRef.current.pause() : audioRef.current.play();
       setIsPlaying(!isPlaying);
     }
   };
